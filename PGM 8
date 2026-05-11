@@ -1,0 +1,66 @@
+        AREA PGM1, CODE, READONLY
+
+DIVIDEND   RN 1
+DIVISOR    RN 2
+QUOTIENT   RN 3
+REMAINDER  RN 4
+N          RN 5
+R          RN 6
+NDR        RN 7
+
+        ENTRY
+
+        LDR R8, =0x40000000
+
+        MOV N, #6
+        MOV R, #3
+
+        SUB NDR, N, R
+
+        MOV DIVIDEND, N
+        BL FACT
+        MOV R9, DIVISOR
+
+        MOV DIVIDEND, R
+        BL FACT
+        MOV R10, DIVISOR
+
+        MOV DIVIDEND, NDR
+        BL FACT
+        MOV R11, DIVISOR
+
+        MUL R12, R10, R11
+
+        MOV DIVIDEND, R9
+        MOV DIVISOR, R12
+
+        BL DIV
+
+        STR QUOTIENT, [R8]
+
+GO
+        B GO
+
+FACT
+        MOV DIVISOR, #1
+
+LOOP
+        MUL DIVISOR, DIVISOR, DIVIDEND
+        SUBS DIVIDEND, DIVIDEND, #1
+        BNE LOOP
+
+        BX LR
+
+DIV
+        MOV QUOTIENT, #0
+
+LOOP2
+        SUBS DIVIDEND, DIVIDEND, DIVISOR
+        ADDPL QUOTIENT, QUOTIENT, #1
+        BPL LOOP2
+
+        ADDMI REMAINDER, DIVIDEND, DIVISOR
+
+        BX LR
+
+        END
