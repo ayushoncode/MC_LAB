@@ -1,0 +1,22 @@
+        AREA PGM1, CODE, READONLY
+        ENTRY
+
+        MOV R1, #0
+        MOV R2, #0
+        MOV R3, #0xA
+        LDR R4, =0x40000000
+
+LOOP
+        LSRS R3, R3, #1
+        ADDCS R2, R2, #1
+        ADDCC R1, R1, #1
+        CMP R3, #0
+        BNE LOOP
+
+        STR R2, [R4]
+        STR R1, [R4, #4]
+
+STOP
+        B STOP
+
+        END
