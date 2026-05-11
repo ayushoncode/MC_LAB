@@ -1,0 +1,16 @@
+AREA PGM1, CODE, READONLY
+ENTRY
+
+    MOV R1, #0
+    MOV R2, #10
+    MOV R3, #1
+
+LOOP
+    ADD R1, R1, R2
+    ADD R3, R3, #2
+    SUBS R2, R2, #1
+    BNE LOOP
+
+GO  B GO
+
+END
