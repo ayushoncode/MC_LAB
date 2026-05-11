@@ -1,0 +1,15 @@
+        AREA PGM1, CODE, READONLY
+        ENTRY
+
+        MOV R1, #1
+        MOV R2, #5
+
+LOOP
+        MUL R1, R1, R2
+        SUBS R2, R2, #1
+        BNE LOOP
+
+GO
+        B GO
+
+        END
