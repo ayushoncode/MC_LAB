@@ -2,22 +2,19 @@
 
 void init()
 {
-    PINSEL0 = 0x00050000;
+    PINSEL0 = 0x00000005;   // P0.0 = TXD0, P0.1 = RXD0
 
-    U1FCR = 0x07;
-    U1LCR = 0x83;
-
-    U1DLL = 0x61;
-    U1DLM = 0x00;
-
-    U1LCR = 0x03;
+    U0FCR = 0x07;           // Enable FIFO
+    U0LCR = 0x83;           // 8-bit, 1 stop bit, DLAB=1
+    U0DLL = 0x61;           // 9600 baud rate
+    U0DLM = 0x00;
+    U0LCR = 0x03;           // DLAB=0
 }
 
 void delay()
 {
     int i;
-
-    for(i = 0; i < 250; i++);
+    for(i=0; i<250; i++);
 }
 
 int main()
@@ -27,12 +24,10 @@ int main()
 
     init();
 
-    for(z = 0; p[z] != '\0'; z++)
+    for(z=0; p[z] != '\0'; z++)
     {
-        U1THR = p[z];
-
-        while(!(U1LSR & 0x20));
-
+        U0THR = p[z];
+        while(!(U0LSR & 0x20));
         delay();
     }
 
